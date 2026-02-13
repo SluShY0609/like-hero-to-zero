@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Emission hinzufügen</title>
+</head>
+<body>
+<h2>Neue Emissionsdaten hinzufügen</h2>
+
+<p th:if="${message != null}" style="color:green;" th:text="${message}"></p>
+
+<form th:action="@{/scientist/add}" method="post">
+    <label for="iso">Land:</label>
+    <select id="iso" name="iso">
+        <option th:each="c : ${countries}"
+                th:value="${c.isoCode}"
+                th:text="${c.name}"></option>
+    </select>
+    <br/><br/>
+
+    <label for="year">Jahr:</label>
+    <input id="year" name="year" type="number" min="1900" max="2100" required/>
+    <br/><br/>
+
+    <label for="co2">CO₂ (kt):</label>
+    <input id="co2" name="co2" type="number" step="0.1" required/>
+    <br/><br/>
+
+    <button type="submit">Speichern</button>
+</form>
+
+<p><a th:href="@{/scientist/dashboard}">Zurück zum Dashboard</a></p>
+<p><a th:href="@{/logout}">Logout</a></p>
+</body>
+</html>

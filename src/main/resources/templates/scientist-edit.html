@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Datensatz bearbeiten</title>
+</head>
+<body>
+<h2>Datensatz bearbeiten</h2>
+
+<p>
+    <strong>Land:</strong> <span th:text="${record.country.name}"></span>
+    (<span th:text="${record.country.isoCode}"></span>)
+</p>
+<p><strong>Jahr:</strong> <span th:text="${record.year}"></span></p>
+
+<form th:action="@{/scientist/edit}" method="post">
+    <input type="hidden" name="id" th:value="${record.id}"/>
+
+    <label for="co2">CO₂ (kt):</label>
+    <input id="co2" name="co2" type="number" step="0.1" th:value="${record.co2Kilotons}" required/>
+    <button type="submit">Speichern</button>
+</form>
+
+<p><a th:href="@{/scientist/records}">Zurück zur Liste</a></p>
+</body>
+</html>

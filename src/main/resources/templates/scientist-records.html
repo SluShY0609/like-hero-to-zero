@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Datensätze</title>
+</head>
+<body>
+<h2>Alle Emissionsdatensätze</h2>
+
+<p th:if="${error != null}" style="color:red;" th:text="${error}"></p>
+
+<table border="1" cellpadding="6">
+    <thead>
+    <tr>
+        <th>Land</th>
+        <th>ISO</th>
+        <th>Jahr</th>
+        <th>CO₂ (kt)</th>
+        <th>Aktion</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="r : ${records}">
+        <td th:text="${r.country.name}"></td>
+        <td th:text="${r.country.isoCode}"></td>
+        <td th:text="${r.year}"></td>
+        <td th:text="${r.co2Kilotons}"></td>
+        <td>
+            <a th:href="@{/scientist/edit(id=${r.id})}">Bearbeiten</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p><a th:href="@{/scientist/dashboard}">Zurück zum Dashboard</a></p>
+</body>
+</html>
