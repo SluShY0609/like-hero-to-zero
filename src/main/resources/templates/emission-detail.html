@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>CO₂-Emission</title>
+</head>
+<body>
+<h2>Aktuellster CO₂-Ausstoß</h2>
+
+<div th:if="${record != null}">
+    <p><strong>Land:</strong> <span th:text="${record.country.name}"></span></p>
+    <p><strong>ISO:</strong> <span th:text="${record.country.isoCode}"></span></p>
+    <p><strong>Jahr:</strong> <span th:text="${record.year}"></span></p>
+    <p><strong>CO₂ (kt):</strong> <span th:text="${record.co2Kilotons}"></span></p>
+</div>
+
+<div th:if="${error != null}">
+    <p style="color:red;" th:text="${error}"></p>
+</div>
+
+<p><a th:href="@{/}">Zurück zur Startseite</a></p>
+</body>
+</html>

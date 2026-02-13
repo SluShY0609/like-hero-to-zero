@@ -6,8 +6,20 @@
 </head>
 <body>
 <h1>Like Hero To Zero</h1>
-<p>Öffentliche Startseite (ohne Login).</p>
+<p>Wähle ein Land aus, um den aktuellsten CO₂-Ausstoß zu sehen.</p>
 
-<p><a th:href="@{/scientist/dashboard}">Zum Scientist-Backend</a></p>
+<form th:action="@{/emission}" method="get">
+    <label for="iso">Land:</label>
+    <select id="iso" name="iso">
+        <option th:each="c : ${countries}"
+                th:value="${c.isoCode}"
+                th:text="${c.name}"></option>
+    </select>
+    <button type="submit">Aktuellsten Wert anzeigen</button>
+</form>
+
+<hr/>
+
+<p><a th:href="@{/scientist/dashboard}">Zum Scientist-Backend (Login)</a></p>
 </body>
 </html>
