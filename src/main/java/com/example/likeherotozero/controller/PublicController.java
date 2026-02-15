@@ -29,10 +29,10 @@ public class PublicController {
 
     @GetMapping("/emission")
     public String emission(@RequestParam("iso") String isoCode, Model model) {
-        Optional<EmissionRecord> recordOpt = emissionService.getLatestEmissionByIsoCode(isoCode);
+        Optional<EmissionRecord> recordOpt = emissionService.getLatestApprovedEmissionByIsoCode(isoCode);
 
         if (recordOpt.isEmpty()) {
-            model.addAttribute("error", "Kein Datensatz gefunden für ISO-Code: " + isoCode);
+            model.addAttribute("error", "Kein freigegebener Datensatz gefunden für ISO-Code: " + isoCode);
             return "emission-detail";
         }
 

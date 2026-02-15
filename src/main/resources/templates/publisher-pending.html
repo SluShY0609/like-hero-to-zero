@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Freigaben</title>
+</head>
+<body>
+
+<h2>Pending Datensätze (Freigabe nötig)</h2>
+
+<table border="1" cellpadding="6">
+    <thead>
+    <tr>
+        <th>Land</th>
+        <th>ISO</th>
+        <th>Jahr</th>
+        <th>CO₂ (kt)</th>
+        <th>Status</th>
+        <th>Aktion</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="r : ${records}">
+        <td th:text="${r.country.name}"></td>
+        <td th:text="${r.country.isoCode}"></td>
+        <td th:text="${r.year}"></td>
+        <td th:text="${r.co2Kilotons}"></td>
+        <td>⏳ pending</td>
+        <td>
+            <form th:action="@{/publisher/approve}" method="post" style="margin:0;">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <input type="hidden" name="id" th:value="${r.id}"/>
+                <button type="submit">Freigeben</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<form th:action="@{/logout}" method="post" style="display:inline;">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button type="submit">🚪 Logout</button>
+</form>
+
+</body>
+</html>

@@ -5,6 +5,7 @@
     <title>Datensätze</title>
 </head>
 <body>
+
 <h2>Alle Emissionsdatensätze</h2>
 
 <p th:if="${error != null}" style="color:red;" th:text="${error}"></p>
@@ -16,6 +17,7 @@
         <th>ISO</th>
         <th>Jahr</th>
         <th>CO₂ (kt)</th>
+        <th>Freigabe</th>
         <th>Aktion</th>
     </tr>
     </thead>
@@ -25,6 +27,7 @@
         <td th:text="${r.country.isoCode}"></td>
         <td th:text="${r.year}"></td>
         <td th:text="${r.co2Kilotons}"></td>
+        <td th:text="${r.approved} ? '✅' : '⏳'"></td>
         <td>
             <a th:href="@{/scientist/edit(id=${r.id})}">Bearbeiten</a>
         </td>
@@ -33,5 +36,6 @@
 </table>
 
 <p><a th:href="@{/scientist/dashboard}">Zurück zum Dashboard</a></p>
+
 </body>
 </html>

@@ -1,7 +1,7 @@
 package com.example.likeherotozero.controller;
 
-import com.example.likeherotozero.repository.CountryRepository;
 import com.example.likeherotozero.service.EmissionService;
+import com.example.likeherotozero.repository.CountryRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +36,8 @@ public class ScientistController {
             @RequestParam("co2") Double co2Kilotons,
             Model model
     ) {
-        emissionService.saveOrUpdate(isoCode, year, co2Kilotons);
-        model.addAttribute("message", "Datensatz gespeichert ✅");
+        emissionService.saveOrUpdatePending(isoCode, year, co2Kilotons);
+        model.addAttribute("message", "Datensatz gespeichert (wartet auf Freigabe) ⏳");
         model.addAttribute("countries", countryRepository.findAll());
         return "scientist-add";
     }
@@ -70,7 +70,7 @@ public class ScientistController {
         }
 
         var record = recordOpt.get();
-        emissionService.saveOrUpdate(
+        emissionService.saveOrUpdatePending(
                 record.getCountry().getIsoCode(),
                 record.getYear(),
                 co2Kilotons

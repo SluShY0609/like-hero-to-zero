@@ -5,21 +5,48 @@
     <title>Like Hero To Zero</title>
 </head>
 <body>
-<h1>Like Hero To Zero</h1>
-<p>Wähle ein Land aus, um den aktuellsten CO₂-Ausstoß zu sehen.</p>
+
+<h1>🌍 Like Hero To Zero</h1>
+
+<h2>CO₂-Emissionen weltweit</h2>
 
 <form th:action="@{/emission}" method="get">
-    <label for="iso">Land:</label>
-    <select id="iso" name="iso">
+    <label for="country">Land auswählen:</label>
+
+    <select id="country" name="iso" required>
+        <option value="">-- bitte wählen --</option>
         <option th:each="c : ${countries}"
                 th:value="${c.isoCode}"
-                th:text="${c.name}"></option>
+                th:text="${c.name}">
+        </option>
     </select>
-    <button type="submit">Aktuellsten Wert anzeigen</button>
+
+    <button type="submit">Anzeigen</button>
 </form>
 
 <hr/>
 
-<p><a th:href="@{/scientist/dashboard}">Zum Scientist-Backend (Login)</a></p>
+<div th:if="${#authorization.expression('isAnonymous()')}">
+    <p><a th:href="@{/login}">🔐 Zum Backend Login</a></p>
+</div>
+
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+    <p>Du bist eingeloggt ✅</p>
+
+    <div th:if="${#authorization.expression('hasRole(''SCIENTIST'')')}">
+        <p><a th:href="@{/scientist/dashboard}">👩‍🔬 Scientist Dashboard</a></p>
+    </div>
+
+    <div th:if="${#authorization.expression('hasRole(''PUBLISHER'')')}">
+        <p><a th:href="@{/publisher/pending}">📝 Publisher Freigaben</a></p>
+    </div>
+
+    <!-- Logout muss POST sein (CSRF) -->
+    <form th:action="@{/logout}" method="post" style="display:inline;">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button type="submit">🚪 Logout</button>
+    </form>
+</div>
+
 </body>
 </html>

@@ -12,12 +12,14 @@ public class EmissionRecord {
     @ManyToOne(optional = false)
     private Country country;
 
-    // H2: "year" kann Probleme machen -> in DB-Spalte umbenennen
     @Column(name = "year_value", nullable = false)
     private Integer year;
 
     @Column(nullable = false)
     private Double co2Kilotons;
+
+    @Column(nullable = false)
+    private Boolean approved = false;
 
     public Long getId() {
         return id;
@@ -45,5 +47,13 @@ public class EmissionRecord {
 
     public void setCo2Kilotons(Double co2Kilotons) {
         this.co2Kilotons = co2Kilotons;
+    }
+
+    public Boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
     }
 }

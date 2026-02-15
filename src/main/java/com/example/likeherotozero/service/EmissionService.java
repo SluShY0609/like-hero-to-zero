@@ -21,17 +21,19 @@ public class EmissionService {
         this.emissionRecordRepository = emissionRecordRepository;
     }
 
-    public Optional<EmissionRecord> getLatestEmissionByIsoCode(String isoCode) {
+    // Öffentlich: nur freigegebene Datensätze anzeigen
+    public Optional<EmissionRecord> getLatestApprovedEmissionByIsoCode(String isoCode) {
         Optional<Country> countryOpt = countryRepository.findByIsoCode(isoCode);
 
         if (countryOpt.isEmpty()) {
             return Optional.empty();
         }
 
-        return emissionRecordRepository.findFirstByCountryOrderByYearDesc(countryOpt.get());
+        return emissionRecordRepository.findFirstByCountryAndApprovedTrueOrderByYearDesc(countryOpt.get());
     }
 
-    public EmissionRecord saveOrUpdate(String isoCode, Integer year, Double co2Kilotons) {
+    // Scientist: erstellt/ändert -> wird wieder "pending" (approved=false)
+    public EmissionRecord saveOrUpdatePending(String isoCode, Integer year, Double co2Kilotons) {
 
         Country country = countryRepository.findByIsoCode(isoCode)
                 .orElseThrow(() -> new IllegalArgumentException("Unbekannter ISO-Code: " + isoCode));
@@ -43,14 +45,30 @@ public class EmissionService {
         record.setYear(year);
         record.setCo2Kilotons(co2Kilotons);
 
+        // jede Änderung muss neu freigegeben werden
+        record.setApproved(false);
+
         return emissionRecordRepository.save(record);
     }
 
+    // Scientist/Publisher: Listen
     public List<EmissionRecord> getAllRecords() {
         return emissionRecordRepository.findAllByOrderByCountry_NameAscYearDesc();
     }
 
     public Optional<EmissionRecord> getRecordById(Long id) {
         return emissionRecordRepository.findById(id);
+    }
+
+    // Publisher: pending list + approve
+    public List<EmissionRecord> getPendingRecords() {
+        return emissionRecordRepository.findAllByApprovedFalseOrderByCountry_NameAscYearDesc();
+    }
+
+    public void approveRecord(Long id) {
+        EmissionRecord record = emissionRecordRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Datensatz nicht gefunden: " + id));
+        record.setApproved(true);
+        emissionRecordRepository.save(record);
     }
 }

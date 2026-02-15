@@ -11,12 +11,14 @@
 <p>Du bist eingeloggt ✅</p>
 
 <p><a th:href="@{/scientist/add}">Neue Emissionsdaten hinzufügen</a></p>
-
 <p><a th:href="@{/scientist/records}">Alle Datensätze anzeigen / bearbeiten</a></p>
-
 <p><a th:href="@{/}">Zur öffentlichen Startseite</a></p>
 
-<p><a th:href="@{/logout}">Logout</a></p>
+<form th:action="@{/logout}" method="post" style="display:inline;">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button type="submit">🚪 Logout</button>
+</form>
 
 </body>
 </html>
+
